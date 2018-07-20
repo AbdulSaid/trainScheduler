@@ -56,21 +56,28 @@
     </div>
     <br>
     <div class="row">
+
       <div class="col-md-12">
-        <h2>Current Train Schedule</h2>
+        <div class="panel panel-primary">
+          <div class="panel-heading">
+            <h3 class="panel-title">Current Train Schedule</h3>
+          </div>
+        </div>
+
+
         <table class="table">
-          <thead class="thead-dark">
+          <thead class="thead-light">
             <tr>
-              <th scope="col">Train Name</th>
-              <th scope="col">Destination</th>
-              <th scope="col">Frequency (min)</th>
-              <th scope="col">Next Arrival</th>
-              <th scope="col">Minutes Away</th>
+              <th>Train Name</th>
+              <th>Destination</th>
+              <th>Frequency (min)</th>
+              <th>Next Arrival</th>
+              <th>Minutes Away</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <th scope="row">1</th>
+              <th>1</th>
               <td>Mark</td>
               <td>Otto</td>
               <td>@mdo</td>
@@ -83,7 +90,7 @@
     <br>
     <div class="row">
       <div class="col-md-12">
-        <h2>Add Train</h2>
+        <h3 class="panelTitle">Add Train</h3>
         <form>
           <div class="form-group">
             <label for="exampleInputEmail1">Train Name</label>
@@ -95,14 +102,14 @@
           </div>
           <div class="form-group">
             <label for="formGroupExampleInput">First Train Time (HH:mm - military time)</label>
-            <input type="number" class="form-control" id="inputTrainTime" placeholder="">
+            <input type="text" class="form-control" id="inputTrainTime" placeholder="">
           </div>
           <div class="form-group">
             <label for="formGroupExampleInput2">Frequency (min)</label>
             <input type="number" class="form-control" id="inputFrequency" placeholder="">
           </div>
 
-          <button type="submit" class="btn btn-primary">Submit</button>
+          <button type="submit" class="btn btn-primary" id="sumbitButton">Submit</button>
         </form>
       </div>
     </div>
@@ -113,7 +120,7 @@
 
   </div>
 
-
+  <script type="text/javascript" src="assets/javascript/game.js"></script>
 
 
 
