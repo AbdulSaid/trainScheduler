@@ -19,6 +19,10 @@ $(document).ready(function() {
   var destination = '';
   var firstTrainTime = '';
   var frequency = '';
+  var keyHolder = '';
+  var getKey = '';
+
+  // var dataRef = database ... not sure yet
 
   //button for adding trains
   $('#submitButton').on('click', function(event) {
@@ -46,7 +50,7 @@ $(document).ready(function() {
     console.log(frequency);
 
     // adds train data to the database
-    database.ref().push({
+    keyHolder = database.ref().push({
       TrainName: trainName,
       Destination: destination,
       FirstTrainTime: firstTrainTime,
@@ -117,6 +121,9 @@ $(document).ready(function() {
           '</td>' +
           '<td>' +
           minutes +
+          '</td>' +
+          '<td>' +
+          "<input type='submit' value='remove train' class='remove-train btn btn-primary btn-sm'>" +
           '</td>'
       );
     },
@@ -124,4 +131,15 @@ $(document).ready(function() {
       console.log('Errors handled: ' + errorObject.code);
     }
   );
+
+  $('body').on('click', '.remove-train', function() {
+    $(this)
+      .closest('tr')
+      .remove();
+    getKey = $(this)
+      .parent()
+      .parent()
+      .attr('id');
+    database.child(getKey).remove();
+  });
 });
