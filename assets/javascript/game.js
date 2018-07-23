@@ -1,145 +1,141 @@
-$(document).ready(function() {
-  // initialize firebase
-  var config = {
-    apiKey: 'AIzaSyDQfNtZ0D4JdrbtmxbB8HhbFtkNNNjahrE',
-    authDomain: 'trainschedulerbootcamp.firebaseapp.com',
-    databaseURL: 'https://trainschedulerbootcamp.firebaseio.com',
-    // projectId: 'trainschedulerbootcamp',
-    storageBucket: 'trainschedulerbootcamp.appspot.com'
-    // messagingSenderId: '998185072638'
-  };
+// initialize firebase
+var config = {
+  apiKey: 'AIzaSyDQfNtZ0D4JdrbtmxbB8HhbFtkNNNjahrE',
+  authDomain: 'trainschedulerbootcamp.firebaseapp.com',
+  databaseURL: 'https://trainschedulerbootcamp.firebaseio.com',
+  projectId: 'trainschedulerbootcamp',
+  storageBucket: 'trainschedulerbootcamp.appspot.com',
+  messagingSenderId: '998185072638'
+};
+firebase.initializeApp(config);
 
-  firebase.initializeApp(config);
+var database = firebase.database();
+console.log(database);
 
-  var database = firebase.database();
-  console.log(database);
+var trainName = '';
+var destination = '';
+var firstTrainTime = '';
+var frequency = '';
+var keyHolder = '';
+var getKey = '';
 
-  // creating variables
-  var trainName = '';
-  var destination = '';
-  var firstTrainTime = '';
-  var frequency = '';
-  var keyHolder = '';
-  var getKey = '';
+// var dataRef = database
 
-  // var dataRef = database ... not sure yet
+// //button for adding trains
+$('#submitButton').on('click', function(event) {
+  event.preventDefault();
 
-  //button for adding trains
-  $('#submitButton').on('click', function(event) {
-    event.preventDefault();
-
-    trainName = $('#inputTrainName')
+  trainName = $('#inputTrainName')
+    .val()
+    .trim();
+  destination = $('#inputDestination')
+    .val()
+    .trim();
+  firstTrainTime = moment(
+    $('#inputTrainTime')
       .val()
-      .trim();
-    destination = $('#inputDestination')
-      .val()
-      .trim();
-    firstTrainTime = moment(
-      $('#inputTrainTime')
-        .val()
-        .trim(),
-      'HH:mm'
-    ).format('X');
-    frequency = $('#inputFrequency')
-      .val()
-      .trim();
+      .trim(),
+    'HH:mm'
+  ).format('X');
+  frequency = $('#inputFrequency')
+    .val()
+    .trim();
 
-    console.log(trainName);
-    console.log(destination);
-    console.log(firstTrainTime);
-    console.log(frequency);
+  console.log(trainName);
+  console.log(destination);
+  console.log(firstTrainTime);
+  console.log(frequency);
 
-    // adds train data to the database
-    keyHolder = database.ref().push({
-      TrainName: trainName,
-      Destination: destination,
-      FirstTrainTime: firstTrainTime,
-      Frequency: frequency
-      // dateAdded: firebase.database.ServerValue.TIMESTAMP
-    });
-
-    // clears all the textboxes
-    $('#inputTrainName').val('');
-    $('#inputDestination').val('');
-    $('#inputTrainTime').val('');
-    $('#inputFrequency').val('');
+  // adds train data to the database
+  keyHolder = database.ref().push({
+    TrainName: trainName,
+    Destination: destination,
+    FirstTrainTime: firstTrainTime,
+    Frequency: frequency
+    // dateAdded: firebase.database.ServerValue.TIMESTAMP
   });
 
-  //add information to firebase
-  database.ref().on(
-    'child_added',
-    function(snapshot) {
-      var sv = snapshot.val();
+  // clears all the textboxes
+  $('#inputTrainName').val('');
+  $('#inputDestination').val('');
+  $('#inputTrainTime').val('');
+  $('#inputFrequency').val('');
+});
 
-      console.log(snapshot.val().TrainName);
-      console.log(snapshot.val().Destination);
-      console.log(snapshot.val().FirstTrainTime);
-      console.log(snapshot.val().Frequency);
+// //add information to firebase
+database.ref().on(
+  'child_added',
+  function(snapshot) {
+    var sv = snapshot.val();
 
-      //store everything in variables
-      var newTrainName = snapshot.val().name;
-      var newDestination = snapshot.val().Destination;
-      var newFirstTrainTime = snapshot.val().FirstTrainTime;
-      var newFrequency = snapshot.val().Frequency;
+    console.log(snapshot.val().TrainName);
+    console.log(snapshot.val().Destination);
+    console.log(snapshot.val().FirstTrainTime);
+    console.log(snapshot.val().Frequency);
 
-      //convert first time into a unix time
-      var newFirstTrainTimeConvert = moment
-        .unix(newFirstTrainTime)
-        .format('HH:mm');
-      console.log(newFirstTrainTimeConvert);
+    //store everything in variables
+    var newTrainName = snapshot.val().TrainName;
+    var newDestination = snapshot.val().Destination;
+    var newFirstTrainTime = snapshot.val().FirstTrainTime;
+    var newFrequency = snapshot.val().Frequency;
 
-      var timeRemainder =
-        moment().diff(moment.unix(newFirstTrainTime), 'minutes') % newFrequency;
+    //convert first time into a unix time
+    var newFirstTrainTimeConvert = moment
+      .unix(newFirstTrainTime)
+      .format('HH:mm');
+    console.log(newFirstTrainTimeConvert);
 
-      var minutes = newFrequency - timeRemainder;
+    var timeRemainder =
+      moment().diff(moment.unix(newFirstTrainTime), 'minutes') % newFrequency;
 
-      var nextTrainArrival = moment()
-        .add(minutes, 'm')
-        .format('hh:mm A');
+    var minutes = newFrequency - timeRemainder;
 
-      // Test for correct times and info
-      console.log(minutes);
-      console.log(nextTrainArrival);
-      console.log(moment().format('hh:mm A'));
-      console.log(nextTrainArrival);
-      console.log(moment().format('X'));
+    var nextTrainArrival = moment()
+      .add(minutes, 'm')
+      .format('hh:mm A');
 
-      //append to the html
-      $('.table').append(
-        '<tr>' +
-          '<td>' +
-          newTrainName +
-          '</td>' +
-          '<td>' +
-          newDestination +
-          '</td>' +
-          '<td>' +
-          newFrequency +
-          '</td>' +
-          '<td>' +
-          nextTrainArrival +
-          '</td>' +
-          '<td>' +
-          minutes +
-          '</td>' +
-          '<td>' +
-          "<input type='submit' value='remove train' class='remove-train btn btn-primary btn-sm'>" +
-          '</td>'
-      );
-    },
-    function(errorObject) {
-      console.log('Errors handled: ' + errorObject.code);
-    }
-  );
+    // Test for correct times and info
+    console.log(minutes);
+    console.log(nextTrainArrival);
+    console.log(moment().format('hh:mm A'));
+    console.log(nextTrainArrival);
+    console.log(moment().format('X'));
 
-  $('body').on('click', '.remove-train', function() {
-    $(this)
-      .closest('tr')
-      .remove();
-    getKey = $(this)
-      .parent()
-      .parent()
-      .attr('id');
-    database.child(getKey).remove();
-  });
+    //append to the html
+    $('.table').append(
+      '<tr>' +
+        '<td>' +
+        newTrainName +
+        '</td>' +
+        '<td>' +
+        newDestination +
+        '</td>' +
+        '<td>' +
+        newFrequency +
+        '</td>' +
+        '<td>' +
+        nextTrainArrival +
+        '</td>' +
+        '<td>' +
+        minutes +
+        '</td>' +
+        '<td>' +
+        "<input type='submit' value='remove train' class='remove-train btn btn-primary btn-sm'>" +
+        '</td>'
+    );
+  },
+  function(errorObject) {
+    console.log('Errors handled: ' + errorObject.code);
+  }
+);
+
+$('body').on('click', '.remove-train', function() {
+  $(this)
+    .closest('tr')
+    .remove();
+  getKey = $(this)
+    .parent()
+    .parent()
+    .attr('id');
+  database.child(getKey).remove();
 });
