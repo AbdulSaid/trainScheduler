@@ -3,6 +3,9 @@
   border-radius: 5px;
   padding: 30px;
 }
+body {
+  background: rgb(255, 193, 112);
+}
 
 .navbar-brand {
   background-color: rgb(255, 193, 112);
@@ -35,4 +38,42 @@ button {
   display: inline-block;
   margin: 1px 1px;
   transition-duration: 0.4s;
+}
+
+#submitButton {
+  border: 2px solid rgb(255, 193, 112);
+  border-radius: 8px;
+  color: white;
+  background-color: rgb(255, 193, 112);
+  padding: 5px;
+  text-align: center;
+  display: inline-block;
+  margin: 1px 1px;
+  transition-duration: 0.4s;
+}
+
+#submitButton:hover {
+  background-color: white;
+  color: rgb(255, 193, 112);
+}
+
+.remove-train {
+  border: 2px solid rgb(255, 193, 112);
+  border-radius: 8px;
+  color: white;
+  background-color: rgb(255, 193, 112);
+  padding: 5px;
+  text-align: center;
+  display: inline-block;
+  margin: 1px 1px;
+  transition-duration: 0.4s;
+}
+
+.remove-train:hover {
+  background-color: white;
+  color: rgb(255, 193, 112);
+}
+
+.th-light {
+  background-color: rgb(255, 193, 112);
 }

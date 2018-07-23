@@ -120,7 +120,7 @@ database.ref().on(
         minutes +
         '</td>' +
         '<td>' +
-        "<input type='submit' value='remove train' class='remove-train btn btn-primary btn-sm'>" +
+        "<input type='submit' value='remove train' class='btn remove-train'>" +
         '</td>'
     );
   },
