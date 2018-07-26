@@ -21,6 +21,15 @@ var getKey = '';
 
 // var dataRef = database
 
+// timer at the top
+setInterval(function(startTime) {
+  $('#timer').html(moment().format('hh:mm a'));
+}, 1000);
+
+setInterval(function(startTime) {
+  $('#timer').html(moment().format('hh:mm a'));
+}, 1000);
+
 // //button for adding trains
 $('#submitButton').on('click', function(event) {
   event.preventDefault();
