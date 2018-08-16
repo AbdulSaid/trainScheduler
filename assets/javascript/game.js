@@ -21,7 +21,7 @@ var getKey = '';
 
 // var dataRef = database
 
-// timer at the top
+// timer at the top of html
 setInterval(function(startTime) {
   $('#timer').html(moment().format('hh:mm a'));
 }, 1000);
